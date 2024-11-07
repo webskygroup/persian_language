@@ -6,7 +6,7 @@
 // Locale
 $_['code']                          = 'fa';
 $_['direction']                     = 'rtl';
-$_['date_format_short']             = 'Y/m/d';
+$_['date_format_short']             = 'Y/m/d H:i:s';
 $_['date_format_long']              = 'l dS F Y';
 $_['time_format']                   = 'h:i:s A';
 $_['datetime_format']               = 'Y/m/d H:i:s';
