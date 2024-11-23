@@ -56,7 +56,7 @@ class TraditionalPersian extends \Opencart\System\Engine\Controller {
 		$data['language_traditional_persian_shamsidate_format'] = $this->config->get('language_traditional_persian_shamsidate_format');
 
 $data['user_token']	 = $this->session->data['user_token'];
-			$data['current_version'] = "1.0.6";
+			$data['current_version'] = "1.0.7";
 		$data['upgrade'] = false;
 
 	  $url = 'https://opencart-ir.com/version/index.php?route=extension/websky_lastversion/module/websky_lastversion';
@@ -127,7 +127,7 @@ $data['user_token']	 = $this->session->data['user_token'];
 
 				$language_id = $this->model_localisation_language->getLanguage('2');
                 if(!$language_id){
-				$this->config->set('config_language_id')=2;
+				
 				// Add language
 				$language_data = [
 					'name'       => 'فارسی',
@@ -145,6 +145,48 @@ $data['user_token']	 = $this->session->data['user_token'];
 			if (is_dir(DIR_EXTENSION . 'persian_language/extension/opencart/')) {
 				$this->copyExtensionTranslations(DIR_EXTENSION . '/persian_language/extension/opencart/', DIR_EXTENSION . '/opencart/');
 			}
+			
+			     $this->db->query("DELETE FROM `" . DB_PREFIX . "stock_status` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'"); 
+			   $this->db->query("INSERT INTO `" . DB_PREFIX . "stock_status` (`language_id`, `name`) VALUES
+                    ( '" . (int)$language_info['language_id'] . "', 'عدم موجودی در انبار'),
+                    ( '" . (int)$language_info['language_id'] . "', '2 تا 3 روز دیگر'),
+                    ( '" . (int)$language_info['language_id'] . "', 'در انبار(موجود)'),
+                    ( '" . (int)$language_info['language_id'] . "', 'پیش سفارش');");
+                   $this->db->query("DELETE FROM `" . DB_PREFIX . "order_status` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'"); 
+                   $this->db->query("INSERT INTO `" . DB_PREFIX . "order_status` (`order_status_id`, `language_id`, `name`) VALUES
+                        (1, '" . (int)$language_info['language_id'] . "', 'در انتظار'),
+                        (2, '" . (int)$language_info['language_id'] . "', 'در حال پردازش'),
+                        (3, '" . (int)$language_info['language_id'] . "', 'ارسال شده'),
+                        (5, '" . (int)$language_info['language_id'] . "', 'کامل شده'),
+                        (7, '" . (int)$language_info['language_id'] . "', 'لغو شده'),
+                        (8, '" . (int)$language_info['language_id'] . "', 'امتناع شده'),
+                        (9, '" . (int)$language_info['language_id'] . "', 'برگشت لغو شده'),
+                        (10, '" . (int)$language_info['language_id'] . "', 'ناموفق'),
+                        (11, '" . (int)$language_info['language_id'] . "', 'بازپرداخت شده'),
+                        (12, '" . (int)$language_info['language_id'] . "', 'برگشت خورده'),
+                        (13, '" . (int)$language_info['language_id'] . "', 'وجه برگشت خورده توسط بانک'),
+                        (14, '" . (int)$language_info['language_id'] . "', 'منقضی شده'),
+                        (15, '" . (int)$language_info['language_id'] . "', 'اقدام شده'),
+                        (16, '" . (int)$language_info['language_id'] . "','باطل شده');");
+                        
+                        $this->db->query("DELETE FROM `" . DB_PREFIX . "stock_status` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'");
+                        $this->db->query("INSERT INTO `" . DB_PREFIX . "stock_status` (`language_id`, `name`) VALUES
+                        ( '" . (int)$language_info['language_id'] . "', 'عدم موجودی در انبار'),
+                        ( '" . (int)$language_info['language_id'] . "', '2 تا 3 روز دیگر'),
+                        ( '" . (int)$language_info['language_id'] . "', 'در انبار(موجود)'),
+                        ( '" . (int)$language_info['language_id'] . "', 'پیش سفارش');");
+                        
+                         $this->db->query("DELETE FROM `" . DB_PREFIX . "length_class_description` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'");
+                        $this->db->query("INSERT FROM `" . DB_PREFIX . "length_class_description` (`length_class_id`, `language_id`, `title`, `unit`) VALUES
+                            (1,'" . (int)$language_info['language_id'] . "', 'سانتی متر', 'cm'),
+                            (2, '" . (int)$language_info['language_id'] . "', 'میلی متر', 'mm'),
+                            (3,'" . (int)$language_info['language_id'] . "', 'اینچ', 'in');");
+                            
+                            
+               
+               
+              
+			
 
 		  }else {
 			$language_data = [
@@ -160,8 +202,15 @@ $data['user_token']	 = $this->session->data['user_token'];
 			} else {
 				// Edit language
 				$this->load->model('localisation/language');
-
-				$this->model_localisation_language->editLanguage($language_info['language_id'], $language_info + ['extension' => 'persian_language']);
+            
+               $language_data = [
+				'name'       => 'فارسی',
+				'code'       => 'fa-ir',
+				'locale'     => 'fa-ir,fa',
+				'extension'  => 'persian_language',
+				'status'     => 1,
+				'sort_order' => 2];
+				$this->model_localisation_language->editLanguage($language_info['language_id'], $language_data);
 			}
 		   
 		       	$language_info = $this->model_localisation_language->getLanguageByCode('fa-ir');
@@ -234,47 +283,7 @@ $data['user_token']	 = $this->session->data['user_token'];
         ];
 		$this->model_localisation_currency->addCurrency($currency_data);
 		
-			if ($language_info) {
-			     $this->db->query("DELETE FROM `" . DB_PREFIX . "stock_status` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'"); 
-			   $this->db->query("INSERT INTO `" . DB_PREFIX . "stock_status` (`language_id`, `name`) VALUES
-                    ( '" . (int)$language_info['language_id'] . "', 'عدم موجودی در انبار'),
-                    ( '" . (int)$language_info['language_id'] . "', '2 تا 3 روز دیگر'),
-                    ( '" . (int)$language_info['language_id'] . "', 'در انبار(موجود)'),
-                    ( '" . (int)$language_info['language_id'] . "', 'پیش سفارش');");
-                   $this->db->query("DELETE FROM `" . DB_PREFIX . "order_status` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'"); 
-                   $this->db->query("INSERT INTO `" . DB_PREFIX . "order_status` (`order_status_id`, `language_id`, `name`) VALUES
-                        (1, '" . (int)$language_info['language_id'] . "', 'در انتظار'),
-                        (2, '" . (int)$language_info['language_id'] . "', 'در حال پردازش'),
-                        (3, '" . (int)$language_info['language_id'] . "', 'ارسال شده'),
-                        (5, '" . (int)$language_info['language_id'] . "', 'کامل شده'),
-                        (7, '" . (int)$language_info['language_id'] . "', 'لغو شده'),
-                        (8, '" . (int)$language_info['language_id'] . "', 'امتناع شده'),
-                        (9, '" . (int)$language_info['language_id'] . "', 'برگشت لغو شده'),
-                        (10, '" . (int)$language_info['language_id'] . "', 'ناموفق'),
-                        (11, '" . (int)$language_info['language_id'] . "', 'بازپرداخت شده'),
-                        (12, '" . (int)$language_info['language_id'] . "', 'برگشت خورده'),
-                        (13, '" . (int)$language_info['language_id'] . "', 'وجه برگشت خورده توسط بانک'),
-                        (14, '" . (int)$language_info['language_id'] . "', 'منقضی شده'),
-                        (15, '" . (int)$language_info['language_id'] . "', 'اقدام شده'),
-                        (16, '" . (int)$language_info['language_id'] . "','باطل شده');");
-                        
-                        $this->db->query("DELETE FROM `" . DB_PREFIX . "stock_status` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'");
-                        $this->db->query("INSERT INTO `" . DB_PREFIX . "stock_status` (`language_id`, `name`) VALUES
-                        ( '" . (int)$language_info['language_id'] . "', 'عدم موجودی در انبار'),
-                        ( '" . (int)$language_info['language_id'] . "', '2 تا 3 روز دیگر'),
-                        ( '" . (int)$language_info['language_id'] . "', 'در انبار(موجود)'),
-                        ( '" . (int)$language_info['language_id'] . "', 'پیش سفارش');");
-                        
-                         $this->db->query("DELETE FROM `" . DB_PREFIX . "length_class_description` WHERE `language_id` = '" . (int)$language_info['language_id'] . "'");
-                        $this->db->query("INSERT FROM `" . DB_PREFIX . "length_class_description` (`length_class_id`, `language_id`, `title`, `unit`) VALUES
-                            (1,'" . (int)$language_info['language_id'] . "', 'سانتی متر', 'cm'),
-                            (2, '" . (int)$language_info['language_id'] . "', 'میلی متر', 'mm'),
-                            (3,'" . (int)$language_info['language_id'] . "', 'اینچ', 'in');");
-                            
-                            
-               }
-               
-               
+		 
           
            }
 			
