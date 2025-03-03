@@ -56,7 +56,7 @@ class TraditionalPersian extends \Opencart\System\Engine\Controller {
 		$data['language_traditional_persian_shamsidate_format'] = $this->config->get('language_traditional_persian_shamsidate_format');
 
 $data['user_token']	 = $this->session->data['user_token'];
-			$data['current_version'] = "1.0.7";
+			$data['current_version'] = "1.0.8";
 		$data['upgrade'] = false;
 
 	  $url = 'https://opencart-ir.com/version/index.php?route=extension/websky_lastversion/module/websky_lastversion';
@@ -239,6 +239,7 @@ $data['user_token']	 = $this->session->data['user_token'];
             'code' => 'persian_language_startup',
             'action' => 'admin/extension/persian_language/startup/persian_language',
             'status' => 1,
+			'description' => 'persian_language_startup',
             'sort_order' => 6,
         ];
 		$this->model_setting_startup->deleteStartupByCode('persian_language_startup');
@@ -249,6 +250,7 @@ $data['user_token']	 = $this->session->data['user_token'];
             'code' => 'persian_language_startup_catalog',
             'action' => 'catalog/extension/persian_language/startup/persian_language',
             'status' => 1,
+			'description' => 'persian_language_startup',
             'sort_order' => 7,
         ];
 		$this->model_setting_startup->deleteStartupByCode('persian_language_startup_catalog');
