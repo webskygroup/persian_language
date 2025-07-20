@@ -56,7 +56,7 @@ class TraditionalPersian extends \Opencart\System\Engine\Controller {
 		$data['language_traditional_persian_shamsidate_format'] = $this->config->get('language_traditional_persian_shamsidate_format');
 
 $data['user_token']	 = $this->session->data['user_token'];
-			$data['current_version'] = "1.1.0";
+			$data['current_version'] = "1.0.8";
 		$data['upgrade'] = false;
 
 	  $url = 'https://opencart-ir.com/version/index.php?route=extension/websky_lastversion/module/websky_lastversion';
@@ -125,9 +125,6 @@ $data['user_token']	 = $this->session->data['user_token'];
 
 			if (!$language_info) {
 
-				$language_id = $this->model_localisation_language->getLanguage('2');
-                if(!$language_id){
-				
 				// Add language
 				$language_data = [
 					'name'       => 'فارسی',
@@ -181,24 +178,9 @@ $data['user_token']	 = $this->session->data['user_token'];
                             (1,'" . (int)$language_info['language_id'] . "', 'سانتی متر', 'cm'),
                             (2, '" . (int)$language_info['language_id'] . "', 'میلی متر', 'mm'),
                             (3,'" . (int)$language_info['language_id'] . "', 'اینچ', 'in');");
-                            
-                            
-               
-               
-              
-			
+ 
 
-		  }else {
-			$language_data = [
-				'name'       => 'فارسی',
-				'code'       => 'fa-ir',
-				'locale'     => 'fa-ir,fa',
-				'extension'  => 'persian_language',
-				'status'     => 1,
-				'sort_order' => 2
-			];
-			$this->model_localisation_language->editLanguage('2',$language_data );
-		  }
+		  
 			} else {
 				// Edit language
 				$this->load->model('localisation/language');

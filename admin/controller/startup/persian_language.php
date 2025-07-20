@@ -158,6 +158,8 @@ class PersianLanguage extends \Opencart\System\Engine\Controller
           $this->event->register('model/catalog/product/editProduct/before', new \Opencart\System\Engine\Action('extension/persian_language/startup/persian_language' . WEBSKY_ROUTE_SEPARATOR . 'model_catalog_product_editProduct'));                
           $this->event->register('model/catalog/product/addProduct/before', new \Opencart\System\Engine\Action('extension/persian_language/startup/persian_language' . WEBSKY_ROUTE_SEPARATOR . 'model_catalog_product_addProduct'));                
 
+            $this->event->register('model/catalog/product/addDiscount/before', new \Opencart\System\Engine\Action('extension/persian_language/startup/persian_language' . WEBSKY_ROUTE_SEPARATOR . 'model_catalog_product_addDiscount'));                
+
           //model_review
          $this->event->register('model/catalog/review/getReview/after', new \Opencart\System\Engine\Action('extension/persian_language/startup/persian_language' . WEBSKY_ROUTE_SEPARATOR . 'model_catalog_review_getReview'));                
          $this->event->register('model/catalog/review/addReview/before', new \Opencart\System\Engine\Action('extension/persian_language/startup/persian_language' . WEBSKY_ROUTE_SEPARATOR . 'model_catalog_review_addReview'));                
@@ -190,7 +192,7 @@ class PersianLanguage extends \Opencart\System\Engine\Controller
         if (in_array($route, $override)) {
        // echo 1;
 
-            $route = 'extension/persian_language/' . $route;
+           // $route = 'extension/persian_language/' . $route;
         }
     }
 
@@ -201,7 +203,7 @@ class PersianLanguage extends \Opencart\System\Engine\Controller
         $this->document->addScript('../extension/persian_language/admin/view/javascript/jquery/datetimepicker/persian-date.min.js');
         $this->document->addScript('../extension/persian_language/admin/view/javascript/jquery/datetimepicker/persian-datepicker.min.js');
         $this->document->addScript('../extension/persian_language/admin/view/javascript/jquery/datetimepicker/persian.min.js');
-        $this->document->addScript('../extension/persian_language/admin/view/javascript/common-rtl.js');
+       $this->document->addScript('../extension/persian_language/admin/view/javascript/jquery/datetimepicker/opencart-date.js');
 
     }
     
@@ -1189,13 +1191,14 @@ class PersianLanguage extends \Opencart\System\Engine\Controller
     
      public function model_catalog_product_editProduct(string &$route, array &$args): void
     {
-       
+      echo 1; 
        if(isset($args[1]['product_discount'] )){
         foreach($args[1]['product_discount'] as $key=>$value){
              $args[1]['product_discount'][$key]['date_start'] =($this->language->get('code') == 'fa') ? jtg($value['date_start']) : $value['date_start'] ;
               $args[1]['product_discount'][$key]['date_end'] =($this->language->get('code') == 'fa') ? jtg($value['date_end']) : $value['date_end'] ;
            
         }
+        echo 3;
             
         }
         if(isset($args[1]['product_special'] )){
@@ -1228,6 +1231,15 @@ class PersianLanguage extends \Opencart\System\Engine\Controller
         }
     }
       //   print_r($args[1]['product_discount']);
+  
+        
+    }
+
+    public function model_catalog_product_addDiscount(string &$route, array &$args): void
+    {
+       
+       
+         print_r($args);
   
         
     }
