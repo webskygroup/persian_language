@@ -56,7 +56,7 @@ class TraditionalPersian extends \Opencart\System\Engine\Controller {
 		$data['language_traditional_persian_shamsidate_format'] = $this->config->get('language_traditional_persian_shamsidate_format');
 
 $data['user_token']	 = $this->session->data['user_token'];
-			$data['current_version'] = "1.0.8";
+			$data['current_version'] = "1.0.9";
 		$data['upgrade'] = false;
 
 	  $url = 'https://opencart-ir.com/version/index.php?route=extension/websky_lastversion/module/websky_lastversion';
