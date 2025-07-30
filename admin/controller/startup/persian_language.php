@@ -1191,7 +1191,7 @@ class PersianLanguage extends \Opencart\System\Engine\Controller
     
      public function model_catalog_product_editProduct(string &$route, array &$args): void
     {
-      echo 1; 
+      
        if(isset($args[1]['product_discount'] )){
         foreach($args[1]['product_discount'] as $key=>$value){
              $args[1]['product_discount'][$key]['date_start'] =($this->language->get('code') == 'fa') ? jtg($value['date_start']) : $value['date_start'] ;
